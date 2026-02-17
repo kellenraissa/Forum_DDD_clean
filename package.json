@@ -1,0 +1,27 @@
+{
+  "name": "forum_ddd_clean",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kellenraissa/Forum_DDD_clean.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kellenraissa/Forum_DDD_clean/issues"
+  },
+  "homepage": "https://github.com/kellenraissa/Forum_DDD_clean#readme",
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}
