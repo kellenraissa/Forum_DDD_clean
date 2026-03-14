@@ -1,11 +1,14 @@
+import { Entity } from "@/core/entities/entity";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { randomUUID } from "node:crypto";
 
-export class Student {
-  public id: string;
-  public name: string;
+interface StudentProps {
+  name: string;
+}
+export class Student extends Entity<StudentProps> {
+  static create(props: StudentProps, id?: UniqueEntityID) {
+    const answer = new Student(props, id);
 
-  constructor(name: string, id?: string) {
-    this.name = name;
-    this.id = id ?? randomUUID();
+    return answer;
   }
 }
