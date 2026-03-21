@@ -5,7 +5,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
 
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
 
     // Tipos do Node
@@ -25,8 +25,9 @@
 
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@test/*": ["test/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "test"]
 }
