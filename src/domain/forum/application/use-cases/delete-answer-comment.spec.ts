@@ -3,6 +3,7 @@ import { DeleteAnswerCommentUseCase } from "@/domain/forum/application/use-cases
 import { makeAnswerComment } from "@test/factories/make-answer-comment";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { beforeEach, describe, expect, it } from "vitest";
+import { NotAllowedError } from "./errors/not-allowed-error";
 
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository;
 let sut: DeleteAnswerCommentUseCase;
@@ -27,7 +28,7 @@ describe("Delete Answer Comment", () => {
     expect(inMemoryAnswerCommentsRepository.items).toHaveLength(0);
   });
 
-  it.skip("should not be able to delete another user answer comment", async () => {
+  it("should not be able to delete another user answer comment", async () => {
     const answerComment = makeAnswerComment({
       authorId: new UniqueEntityID("author-1"),
     });
@@ -39,7 +40,7 @@ describe("Delete Answer Comment", () => {
       authorId: "author-2",
     });
 
-    // expect(result.isLeft()).toBe(true)
-    // expect(result.value).toBeInstanceOf(NotAllowedError)
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });
