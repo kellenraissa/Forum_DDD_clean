@@ -4,14 +4,21 @@ import { InMemoryAnswerCommentsRepository } from "@test/repositories/in-memory-a
 import { CommentOnAnswerUseCase } from "@/domain/forum/application/use-cases/comment-on-answer";
 
 import { beforeEach, describe, expect, it } from "vitest";
+import { InMemoryAnswerAttachmentsRepository } from "@test/repositories/in-memory-answer-attachments-repository";
 
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository;
 let sut: CommentOnAnswerUseCase;
 
 describe("Comment on Answer", () => {
   beforeEach(() => {
-    inMemoryAnswersRepository = new InMemoryAnswersRepository();
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository();
+
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository,
+    );
     inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository();
 
     sut = new CommentOnAnswerUseCase(

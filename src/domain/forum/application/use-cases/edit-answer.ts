@@ -3,11 +3,16 @@ import { Answer } from "../../enterprise/entities/answer";
 import { AnswersRepository } from "../repositories/answers-repository";
 import { NotAllowedError } from "./errors/not-allowed-error";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
+import { AnswerAttachment } from "../../enterprise/entities/answer-attachments";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { AnswerAttachmentRepository } from "../repositories/answer-attachments-repository";
+import { AnswerAttachmentList } from "../../enterprise/entities/answer-attachments-list";
 
 interface EditAnswerUseCaseRequest {
   authorId: string;
   answerId: string;
   content: string;
+  attachmentsIds: string[];
 }
 type EditAnswerUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
@@ -17,12 +22,16 @@ type EditAnswerUseCaseResponse = Either<
 >;
 
 export class EditAnswerUseCase {
-  constructor(private answersRepository: AnswersRepository) {}
+  constructor(
+    private answersRepository: AnswersRepository,
+    private answerAttachmentsRepository: AnswerAttachmentRepository,
+  ) {}
 
   async execute({
     authorId,
     answerId,
     content,
+    attachmentsIds,
   }: EditAnswerUseCaseRequest): Promise<EditAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId);
 
@@ -33,6 +42,23 @@ export class EditAnswerUseCase {
     if (authorId != answer.authorId.toString()) {
       return left(new NotAllowedError());
     }
+
+    const currentAnswerAttachments =
+      await this.answerAttachmentsRepository.findManyByAnswerId(answerId);
+    const answerAttachemntList = new AnswerAttachmentList(
+      currentAnswerAttachments,
+    );
+
+    const answerAttahcments = attachmentsIds.map((attachmentsId) => {
+      return AnswerAttachment.create({
+        attachmentId: new UniqueEntityID(attachmentsId),
+        answerId: answer.id,
+      });
+    });
+
+    answerAttachemntList.update(answerAttahcments);
+
+    answer.attachments = answerAttachemntList;
 
     answer.content = content;
 

@@ -1,4 +1,3 @@
-import { PaginationParams } from "@/core/repositories/pagination-params";
 import { QuestionAttachmentRepository } from "@/domain/forum/application/repositories/question-attachments-repository";
 import { QuestionAttachment } from "@/domain/forum/enterprise/entities/question-attachments";
 
@@ -11,5 +10,13 @@ export class InMemoryQuestionAttachmentsRepository implements QuestionAttachment
     );
 
     return questionAttachments;
+  }
+
+  async deleteManyByQuestionId(questionId: string) {
+    const questionAttachments = this.items.filter(
+      (item) => item.questionId.toString() !== questionId,
+    );
+
+    this.items = questionAttachments;
   }
 }

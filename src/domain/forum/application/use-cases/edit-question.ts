@@ -60,9 +60,9 @@ export class EditQuestionUseCase {
 
     questionAttachemntList.update(questionAttahcments);
 
+    question.attachments = questionAttachemntList;
     question.title = title;
     question.content = content;
-    question.attachments = questionAttachemntList;
 
     await this.questionsRepository.save(question);
 
